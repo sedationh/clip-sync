@@ -1,6 +1,6 @@
-const CACHE_NAME = "clipsync-cache-v1";
+const CACHE_NAME = "clipsync-cache-v2";
 
-// 监听 install 事件，预缓存一些关键文件
+// 监听 install 事件，预缓存静态资源
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -9,19 +9,37 @@ self.addEventListener("install", (event) => {
   );
 });
 
-// 监听 fetch 事件，拦截所有请求，优先返回缓存
+// 监听 fetch 事件，区分不同的资源类型
 self.addEventListener("fetch", (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      return (
-        response ||
-        fetch(event.request).then((networkResponse) => {
+  const { request } = event;
+  
+  // 对 HTML 文件使用 "Network First" 策略
+  if (request.mode === "navigate") {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
           return caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, networkResponse.clone());
+            cache.put(request, response.clone());
+            return response;
+          });
+        })
+        .catch(() => caches.match(request)) // 如果离线，则返回缓存
+    );
+    return;
+  }
+
+  // 对其他资源（CSS、JS、图片）使用 "Stale-While-Revalidate" 策略
+  event.respondWith(
+    caches.match(request).then((cachedResponse) => {
+      const fetchPromise = fetch(request)
+        .then((networkResponse) => {
+          return caches.open(CACHE_NAME).then((cache) => {
+            cache.put(request, networkResponse.clone());
             return networkResponse;
           });
         })
-      );
+        .catch(() => cachedResponse); // 如果离线，返回缓存
+      return cachedResponse || fetchPromise;
     })
   );
 });
