@@ -17,6 +17,19 @@ export default function Home() {
     handleCopy(debouncedText);
   }, [debouncedText]);
 
+  useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/sw.js")
+        .then(() => console.log("Service Worker registered!"))
+        .catch((err) =>
+          console.error("Service Worker registration failed:", err)
+        );
+    } else {
+      console.log("Service Worker is not supported in this browser.");
+    }
+  }, []);
+
   const handleCopy = async (text: string) => {
     if (text === "") {
       setCopied(false);
