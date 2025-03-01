@@ -53,7 +53,7 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-pink-50">
+    <main className="flex min-h-screen flex-col items-center p-4 bg-pink-50 pt-[20vh]">
       <div className="w-full max-w-md space-y-4">
         <h1 className="text-2xl font-bold text-center text-pink-700">
           剪贴板同步工具
