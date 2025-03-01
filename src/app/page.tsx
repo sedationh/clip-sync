@@ -48,16 +48,16 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-4">
+    <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-pink-50">
       <div className="w-full max-w-md space-y-4">
-        <h1 className="text-2xl font-bold text-center">剪贴板同步工具</h1>
-        <p className="text-center text-gray-600">
+        <h1 className="text-2xl font-bold text-center text-pink-700">剪贴板同步工具</h1>
+        <p className="text-center text-gray-700">
           在下方输入框中输入的内容会自动同步到您的剪贴板
         </p>
         <div className="space-y-2">
           <textarea
             ref={textareaRef}
-            className="w-full p-3 border border-gray-300 rounded-md font-mono"
+            className="w-full p-4 border border-pink-300 rounded-md font-mono shadow-md focus:outline-none focus:ring-2 focus:ring-pink-500"
             rows={5}
             value={text}
             onChange={(e) => setText(e.target.value)}
@@ -70,7 +70,7 @@ export default function Home() {
             {text && !copied && (
               <button
                 onClick={() => handleCopy(text)}
-                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                className="px-4 py-2 bg-pink-600 text-white rounded-md hover:bg-pink-700 transition duration-200"
               >
                 点击复制
               </button>
@@ -78,7 +78,7 @@ export default function Home() {
             {text && (
               <button
                 onClick={handleClear}
-                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+                className="px-4 py-2 bg-pink-500 text-white rounded-md hover:bg-pink-600 transition duration-200"
               >
                 清除
               </button>
