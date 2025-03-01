@@ -23,17 +23,9 @@ export default function Home() {
       return;
     }
     try {
-      // 保存当前焦点元素
-      const activeElement = document.activeElement;
-
       await copy(text);
       console.log("文本已复制到剪贴板");
       setCopied(true);
-
-      // 如果之前焦点在文本框，则恢复焦点
-      if (activeElement === textareaRef.current) {
-        textareaRef.current?.focus();
-      }
     } catch (err) {
       console.error("无法复制文本:", err);
       setCopied(false);
@@ -50,7 +42,9 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-4 bg-pink-50">
       <div className="w-full max-w-md space-y-4">
-        <h1 className="text-2xl font-bold text-center text-pink-700">剪贴板同步工具</h1>
+        <h1 className="text-2xl font-bold text-center text-pink-700">
+          剪贴板同步工具
+        </h1>
         <p className="text-center text-gray-700">
           在下方输入框中输入的内容会自动同步到您的剪贴板
         </p>
