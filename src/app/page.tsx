@@ -57,13 +57,13 @@ export default function Home() {
         <div className="space-y-2">
           <textarea
             ref={textareaRef}
-            className="w-full p-4 border border-pink-300 rounded-md font-mono shadow-md focus:outline-none focus:ring-2 focus:ring-pink-500"
+            className="w-full p-4 border border-pink-300 rounded-md font-mono shadow-md focus:outline-none focus:ring-2 focus:ring-pink-500 text-gray-500"
             rows={5}
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder="在此输入文本..."
           />
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center min-h-[40px]">
             {text && copied && (
               <p className="text-sm text-green-600">✓ 文本已复制到剪贴板</p>
             )}
