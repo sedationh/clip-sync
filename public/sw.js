@@ -16,14 +16,19 @@ self.addEventListener("fetch", (event) => {
   // 对 HTML 文件使用 "Network First" 策略
   if (request.mode === "navigate") {
     event.respondWith(
-      fetch(request)
+      Promise.race([
+        fetch(request),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Timeout')), 1500)
+        )
+      ])
         .then((response) => {
           return caches.open(CACHE_NAME).then((cache) => {
             cache.put(request, response.clone());
             return response;
           });
         })
-        .catch(() => caches.match(request)) // 如果离线，则返回缓存
+        .catch(() => caches.match(request)) // 如果离线或超时，则返回缓存
     );
     return;
   }
